@@ -7,3 +7,14 @@
 h1 {
 	font-family : 'Hanna';
 }
+
+
+
+
+.navbar-brand {
+  float: left;
+  height: 150px;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+}

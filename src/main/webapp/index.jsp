@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="css/custom.css">
-<title>Hello World</title>
+<title>내돈내산 리뷰사이트</title>
 </head>
 <body>
  	<script>

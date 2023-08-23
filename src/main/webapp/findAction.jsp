@@ -10,8 +10,8 @@
 <jsp:setProperty name="user" property="userTel1" />
 <jsp:setProperty name="user" property="userTel2" />
 <jsp:setProperty name="user" property="userTel3" />
-<jsp:setProperty name="user" property="userGender" />
 <jsp:setProperty name="user" property="userEmail" />
+<jsp:setProperty name="user" property="checkFind" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,11 +23,10 @@
 <body>
 	<%
 		String userId = null;
-		
+	
 		if(session.getAttribute("userId") != null){
 			userId = (String) session.getAttribute("userId");
 		}
-		
 		if(userId != null){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
@@ -36,32 +35,31 @@
 			script.println("</script>");
 		}
 		
+		UserDAO userDAO = new UserDAO();
+		String result = userDAO.findId(user.getCheckFind(), user.getUserName(), user.getUserEmail(), user.getUserTel1(),user.getUserTel2(), user.getUserTel3());
 		
-		if(user.getUserId() == null || user.getUserPw() == null || user.getUserName() == null 
-				|| user.getUserGender() == null || user.getUserEmail() == null) {
+		if(result == "1"){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
-			script.println("alert('입력되지 않은 항목이 존재합니다.')");
+			script.println("alert('조회 된 회원 정보가 존재하지 않습니다.')");
+			script.println("history.back()");
+			script.println("</script>");
+		}
+		else if(result == "-2"){
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('회원 정보에 오류가 발생하였습니다.')");
 			script.println("history.back()");
 			script.println("</script>");
 		}else{
-			UserDAO userDAO = new UserDAO();
-			int result = userDAO.join(user);
-			if(result == -1){
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert('이미 존재하는 아이디입니다.')");
-				script.println("history.back()");
-				script.println("</script>");
-			}
-			else{
-				//session.setAttribute("userId", user.getUserId());
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("location.href = 'login.jsp'");
-				script.println("</script>");
-			}
+			session.setAttribute("userId", user.getUserId());
+			session.setAttribute("findId", result);
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("location.href = 'find_id_success.jsp'");
+			script.println("</script>");
 		}
+		
 	%>
 </body>
 </html>

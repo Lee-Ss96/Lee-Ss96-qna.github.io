@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %> 
+<%@ page import="user.User" %> 
+<%@ page import="user.UserDAO" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +19,7 @@
 			userId = (String) session.getAttribute("userId");
 		}
 		
+		String name = (String) session.getAttribute("findId");
 	%>
 	<div id="header">
 		<div class="inner">
@@ -34,7 +37,7 @@
 			</div>
 		
 		    <div class="xans-element- xans-layout xans-layout-statelogoff ">
-		    <%
+		    	<%
 		    	if(userId == null){
 		    %>
 		    	<a href="login.jsp">로그인</a>
@@ -68,48 +71,35 @@
 	<div id="container">
         <div id="contents">
 			<div class="path">
-   	 			<span>현재 위치</span>
+    			<span>현재 위치</span>
     			<ol>
     				<li><a href="/">홈</a></li>
-        			<li title="현재 위치"><strong>로그인</strong></li>
+        			<li title="현재 위치"><strong>아이디 찾기</strong></li>
     			</ol>
     		</div>
 
 			<div class="titleArea">
-			    <h2>로그인</h2>
+    			<h2>회원 아이디 조회</h2>
 			</div>
-	
-			<form name="frm" action="loginAction.jsp" method="post" onsubmit="return validation()">
-				<div class="xans-element- xans-member xans-member-login ec-base-box typeThin ">
-					<div class="login">
-		        		<h3 class="boxTitle">회원로그인</h3>
-		        		<fieldset>
-							<legend>회원로그인</legend>
-		            		<label class="id ePlaceholder" title="아이디"><input id="userId" name="userId" fw-filter="isFill" fw-label="아이디" fw-msg="" class="inputTypeText" placeholder="아이디" value="" type="text"></label>
-		            		<label class="password ePlaceholder" title="비밀번호"><input id="userPw" name="userPw" fw-filter="isFill&amp;isMin[4]&amp;isMax[16]" fw-label="패스워드" fw-msg="" autocomplete="off" value="" type="password" placeholder="비밀번호"></label>
-		            		<input type="submit" class="btn btn-primary form-control" value="로그인">
-		            		<ul class="snsArea">
-								<li class="displaynone">
-									<a href="#none" onclick=""><img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_naver_login.gif" alt="네이버 로그인"></a>
-								</li>
-				                <li class="">
-				                    <a href="#none" onclick="MemberAction.snsLogin('googleplus', 'http%3A%2F%2Fjeuro.co.kr%2Findex.html')"><img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_google_login.gif" alt="구글 로그인"></a>
-				                </li>
-				                <li class="">
-				                    <a href="#none" onclick="MemberAction.kakaosyncLogin('e0f3843205ad2147cda57fa34e6d521f')"><img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_kakao_login.gif" alt="카카오계정 로그인"></a>
-				                </li>
-				            </ul>
-							<ul>
-								<li><a href="find_id.jsp">아이디찾기</a></li>
-				                <li><a href="find_pw.jsp">비밀번호찾기</a></li>
-				                <li><a href="join.jsp">회원가입</a></li>
-				            </ul>
-		        		</fieldset>
+
+			<form name="frm" action="findAction.jsp" method="post" onsubmit="return validation()">
+				<div class="xans-element- xans-member xans-member-findid ec-base-box typeThin ">
+					<div class="findId">
+        				<h3 class="boxTitle">회원 아이디 조회</h3>
+        				<fieldset>
+							<legend>회원 아이디 조회</legend>
+				            <p id="name_view" class="name" style=""><strong id="name_lable" style="width: 100%; text-align: center;">입력된 정보로 조회하신 회원님의 아이디는</strong></p>
+				            <p id="email_view" class="email" style="text-align: center;"><span style="font-size: 20px; font-weight: bold;"><%= name %></span> 입니다.</p>
+				            <div class="ec-base-button gColumn">
+				            	<button type="button" onclick="location.href='login.jsp'" style="width: 30%; height: 50px; border: 1px solid #345672; border-radius: 10px; background: lightsteelblue;">로그인</button>
+				            	<button type="button" onclick="location.href='find_pw.jsp'" style="width: 30%; height: 50px; border: 1px solid #345672; border-radius: 10px; background: lightsteelblue;">비밀번호 찾기</button>
+				            </div>
+				        </fieldset>
 					</div>
 				</div>
 			</form>
         </div>
-        <hr class="layout">
+	<hr class="layout">
         <div id="sidebar">
             <div id="category" class="xans-element- xans-layout xans-layout-category">
 	            <div class="position">
@@ -317,28 +307,77 @@
 				<a class="right carousel-control" href="#myCarousel" data-slide="next">
 					<span class="glyphicon glyphicon-chevron-right"></span>
 				</a>
-				</div>
 			</div>
 		</div>
-		--%>
-		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<script src="js/bootstrap.js"></script>
-		<script>
-			function validation(){
-				if( frm.userId.value == "" ) {
-			        frm.userId.focus();
-			        alert("아이디를 입력해 주십시오.");
+	</div>
+	--%>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script>
+		var findType = "2";
+		
+		if (document.addEventListener) {
+			window.addEventListener('pageshow', function (event) {
+				if (event.persisted || window.performance && window.performance.navigation.type == 2) {
+					location.reload();
+				}
+			}, false);
+		}
+		
+		//아이디 찾기 이메일/전화번호 선택
+		$("input[name='checkFind']").change(function(){
+			findType = $("input[name='checkFind']:checked").val();
+			
+			$("#name").val("");
+			$("#email").val("");
+			$(".mobile").val("");
+			
+			if(findType == "2"){
+				$("#email_view").css('display', "");
+				$("#mobile_view").css('display', "none");
+			}else if(findType == "3"){
+				$("#email_view").css('display', "none");
+				$("#mobile_view").css('display', "");
+			}
+				
+		});
+		
+		
+		//validation 체크
+		function validation(){
+			if( frm.userName.value == "" ) {
+		        frm.userName.focus();
+		        alert("이름을 입력해 주십시오.");
+
+		        return false;
+		    }
+			
+			if(findType == "2"){
+				if( frm.userEmail.value == "" ) {
+			        frm.userEmail.focus();
+			        alert("이메일을 입력해 주십시오.");
 	
 			        return false;
 			    }
-				if( frm.userPw.value == "" ) {
-			        frm.userPw.focus();
-			        alert("비밀번호를 입력해 주십시오.");
-	
+			}else{
+				if( frm.userTel1.value == "" ) {
+			        frm.userTel1.focus();
+			        alert("전화번호를 입력해 주십시오.");
+			        return false;
+			    }
+				if( frm.userTel2.value == "" ) {
+			        frm.userTel2.focus();
+			        alert("전화번호를 입력해 주십시오.");
+			        return false;
+			    }
+				if( frm.userTel3.value == "" ) {
+			        frm.userTel3.focus();
+			        alert("전화번호를 입력해 주십시오.");
 			        return false;
 			    }
 			}
-	
+		}
+
 	</script>
 </body>
 </html>

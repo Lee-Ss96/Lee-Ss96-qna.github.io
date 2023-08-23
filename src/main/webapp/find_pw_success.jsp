@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %> 
+<%@ page import="user.User" %> 
+<%@ page import="user.UserDAO" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +18,8 @@
 		if(session.getAttribute("userId") != null){
 			userId = (String) session.getAttribute("userId");
 		}
+		
+		String idVal = (String)session.getAttribute("idVal");
 	%>
 	<div id="header">
 		<div class="inner">
@@ -70,110 +74,37 @@
     			<span>현재 위치</span>
     			<ol>
     				<li><a href="/">홈</a></li>
-        			<li title="현재 위치"><strong>회원 가입</strong></li>
+        			<li title="현재 위치"><strong>비밀번호 찾기</strong></li>
     			</ol>
     		</div>
+
 			<div class="titleArea">
-			    <h2>회원 가입</h2>
+    			<h2>회원 비밀번호 조회</h2>
 			</div>
 
-			<form name="frm" method="post" action="joinAction.jsp" onsubmit="return validation()">
-				<div class="xans-element- xans-member xans-member-join">
-				<div class="ec-base-table typeWrite">
-	        		<table border="1" summary="">
-						<caption>회원가입</caption>
-	        			<colgroup>
-							<col style="width:150px;">
-							<col style="width:auto;">
-						</colgroup>
-					</table>
+			<form name="frm" action="updatePwAction.jsp" method="post" onsubmit="return validation()">
+				<div class="xans-element- xans-member xans-member-findid ec-base-box typeThin ">
+					<div class="findId">
+        				<h3 class="boxTitle">회원 비밀번호 조회</h3>
+        				<fieldset>
+							<legend>회원 비밀번호 조회</legend>
+				            <p id="name_view" class="name" style=""><strong id="name_lable" style="width: 100%; text-align: center;">새 비밀번호로 변경해주십시오. </strong></p>
+				            <p style=""><strong id="idInup_lable">아이디</strong> <input id="idInput" name="userId" fw-filter="" fw-label="새 비밀번호" fw-msg="" style="width: 226px;" class="lostInput" placeholder="(문자 2가지 이상조합, 10~20자)" value="<%= idVal %>" type="text">
+				            </p>
+				            <p id="new_pw" class="name" style=""><strong id="newPw_lable">새 비밀번호</strong> <input id="newPw" onblur="onBlur()" name="userPw" fw-filter="" fw-label="새 비밀번호" fw-msg="" style="width: 226px;" class="lostInput" placeholder="(문자 2가지 이상조합, 10~20자)" value="" type="password">
+				            	<span id="pwIn" style="display:none; padding-left: 34%;"></span>
+				            </p>
+				            <p id="new_pw_chk" class="name" style=""><strong id="newPwChk_lable">새 비밀번호 확인</strong> <input id="newPwChk" name="userPwChk" oninput="pwCheck()" fw-filter="" fw-label="새 비밀번호 확인" fw-msg=""  style="width: 226px;" class="lostInput" placeholder="" value="" type="password">
+				            	<span id="pwConfirm" style="display:none; padding-left: 34%;"></span>
+				            </p>
+				            <div class="ec-base-button gColumn">
+				            	<input type="submit" class="btn btn-primary form-control" class="btn btn-primary form-control" value="변경하기">
+				            </div>
+				        </fieldset>
+					</div>
 				</div>
-				<h3 class="displaynone ">기본정보</h3>
-				<p class="required displaynone"><img src="//img.echosting.cafe24.com/skin/base/common/ico_required_blue.gif" alt="필수"> 필수입력사항</p>
-				<div class="ec-base-table typeWrite">
-	        		<table border="1" summary="">
-						<caption>회원 기본정보</caption>
-	        			<colgroup>
-							<col style="width:150px;">
-							<col style="width:auto;">
-						</colgroup>
-						<tbody>
-							<tr>
-								<th scope="row">아이디 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required_blue.gif" alt="필수"></th>
-	                			<td><input id="userId" name="userId" onblur="onBlurId()" fw-filter="isFill&amp;isFill&amp;isMin[4]&amp;isMax[20]&amp;isIdentity" fw-label="아이디" fw-msg="" maxlength="16" class="inputTypeText" placeholder="" value="" type="text"> <span id="idMsg"></span> (영문소문자/숫자, 4~16자)
-	                			<br> <span id="idChk" style="display:none;"></span></td>
-	            			</tr>
-							<tr>
-								<th scope="row">비밀번호 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required_blue.gif" alt="필수"></th>
-	                			<td>
-	                    			<div class="eTooltip">
-	                        			<input id="userPw" name="userPw" onblur="onBlur()" fw-filter="isFill&amp;isMin[4]&amp;isMax[20]" fw-label="비밀번호" fw-msg="" autocomplete="off" maxlength="20" 0="disabled" value="" type="password">
-	                    			</div>
-	                    			<span>(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~20자)</span><br>
-	                    			<span id="pwIn" style="display:none;"></span>                     
-	                    		</td>
-	           				 </tr>
-							<tr>
-								<th scope="row">비밀번호 확인 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required_blue.gif" alt="필수"></th>
-	                			<td><input id="passwd_confirm" name="user_passwd_confirm" oninput="pwCheck()" fw-filter="isFill&amp;isMatch[passwd]" fw-label="비밀번호 확인" fw-msg="비밀번호가 일치하지 않습니다." autocomplete="off" maxlength="20" 0="disabled" value="" type="password"> <span id="pwConfirmMsg"></span><br>
-									<span id="pwConfirm" style="display:none;"></span> </td>
-	            			</tr>
-							<tr>
-								<th scope="row" id="nameTitle">이름 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required_blue.gif" alt="필수"></th>
-	                			<td><span id="nameContents"><input type="text" name="userName" id="userName" maxlength="20"></span>
-	                    			<span id="under14Msg" class="displaynone">14세 미만 사용자는 법정대리인 동의가 필요합니다.</span>
-	                			</td>
-	            			</tr>
-	            			<tr>
-								<th scope="row" id="gender">성별 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required_blue.gif" alt="필수"></th>
-	                			<td>
-	                				<div clase="btn-group" data-toggle="buttons">
-										<label class="btn btn-primary active">
-											<input type="radio" name="userGender" autocomplate="off" value="남자" checked>남자
-										</label>
-										<label class="btn btn-primary">
-											<input type="radio" name="userGender" autocomplate="off" value="여자" checked>여자
-										</label>
-									</div>
-	                			</td>
-	            			</tr>
-							<tr class="displaynone">
-								<th scope="row">주소 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required_blue.gif" class="displaynone" alt="필수"></th>
-	                			<td>
-				                    <input id="postcode1" name="postcode1" fw-filter="isLengthRange[1][14]" fw-label="우편번호1" fw-msg="" class="inputTypeText" placeholder="" readonly="readonly" maxlength="14" value="" type="text">                    <a href="#none" class="btnNormal" onclick="" id="postBtn">우편번호</a><br>
-				                    <input id="addr1" name="addr1" fw-filter="" fw-label="주소" fw-msg="" class="inputTypeText" placeholder="" readonly="readonly" value="" type="text"> 기본주소<br>
-				                    <input id="addr2" name="addr2" fw-filter="" fw-label="주소" fw-msg="" class="inputTypeText" placeholder="" value="" type="text"> 나머지주소                 
-				                </td>
-				            </tr>
-							<tr class="">
-								<th scope="row">휴대전화 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required_blue.gif" class="displaynone" alt="필수"></th>
-	                			<td><select id="mobile1" name="userTel1" fw-filter="isNumber" fw-label="휴대전화" fw-alone="N" fw-msg="">
-									<option value="010">010</option>
-									<option value="011">011</option>
-									<option value="016">016</option>
-									<option value="017">017</option>
-									<option value="018">018</option>
-									<option value="019">019</option>
-									</select>-<input id="mobile2" name="userTel2" maxlength="4" fw-filter="isNumber" fw-label="휴대전화" fw-alone="N" fw-msg="" placeholder="" value="" type="text">-<input id="mobile3" name="userTel3" maxlength="4" fw-filter="isNumber" fw-label="휴대전화" fw-alone="N" fw-msg="" placeholder="" value="" type="text">
-								</td>
-	            			</tr>
-							<tr>
-								<th scope="row">이메일 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required_blue.gif" alt="필수"></th>
-	                			<td><input id="email1" name="userEmail" fw-filter="isFill&amp;isEmail" fw-label="이메일" fw-alone="N" fw-msg="" placeholder="" value="" type="email"> <span id="emailMsg"></span>
-								</td>
-	            			</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="ec-base-button">
-					<input type="submit" class="btnSubmitFix sizeM" value="회원가입">
-			    </div>
-				<div id="ec_shop_member_confirm-infolayer" class="joinConfirm ec-base-layer">
-	    			<a href="#none" class="close"><img src="//img.echosting.cafe24.com/skin/base/common/btn_close.gif" alt="닫기" onclick="CheckingJoinInfoLayerClose()"></a>
-				</div>
-			</div>
-		</form>        
-	</div>
+			</form>
+        </div>
 	<hr class="layout">
         <div id="sidebar">
             <div id="category" class="xans-element- xans-layout xans-layout-category">
@@ -302,36 +233,29 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script>
-		var idVal = 0;
-		var pwVal = 0;
+		var findType = "2";
+		
+		var pwVal = 0; 		
 		var pwChk = 0;
-	
-		function onBlurId(){
-			 var id = $("#userId").val();
-			 var engNum = id.search(/^[a-zA-Z0-9]*$/);
-			 
-			 if(id.length < 4 || id.length > 16){
-				 $('#idChk').text('4자리 ~ 16자리 이내로 입력해주세요.').css({'color':'red', 'display':'block'} );
-				 idVal = 0;
-			 }else if(id.search(/\s/) != -1){
-				 $('#idChk').text('아이디는 공백 없이 입력해주세요.').css({'color':'red', 'display':'block'} )
-				 idVal = 0;
-			 }else if( engNum < 0  ){
-				 $('#idChk').text('영문,숫자만 입력해주세요.').css({'color':'red', 'display':'block'} )
-				 idVal = 0;
-			 }else {
-				 $('#idChk').text('조건에 일치하는 아이디입니다.').css({'color':'green', 'display':'block'} );
-				 idVal = 1;
-			 }
+		
+		//라디오버튼 초기화
+		if (document.addEventListener) {
+			window.addEventListener('pageshow', function (event) {
+				if (event.persisted || window.performance && window.performance.navigation.type == 2) {
+					location.reload();
+				}
+			}, false);
 		}
 		
+		
+		//비밀번호 조건
 		function onBlur(){
-			 var pw = $("#userPw").val();
+			 var pw = $("#newPw").val();
 			 var num = pw.search(/[0-9]/g);
 			 var eng = pw.search(/[a-z]/ig);
 			 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 			 
-			 $('#passwd_confirm').val("");
+			 $('#newPwChk').val("");
 			 $('#pwIn').text('').css({'color':'red', 'display':'none'} )
 
 			 if(pw.length < 10 || pw.length > 20){
@@ -346,53 +270,57 @@
 			 }
 		}
 		
+		//아이디 찾기 이메일/전화번호 선택
+		$("input[name='checkFind']").change(function(){
+			findType = $("input[name='checkFind']:checked").val();
+			
+			$("#name").val("");
+			$("#email").val("");
+			$(".mobile").val("");
+			
+			if(findType == "2"){
+				$("#email_view").css('display', "");
+				$("#mobile_view").css('display', "none");
+			}else if(findType == "3"){
+				$("#email_view").css('display', "none");
+				$("#mobile_view").css('display', "");
+			}
+				
+		});
+		
+		
+		//validation 체크
 		function validation(){
-			if( frm.userId.value == "" ) {
-		        frm.userId.focus();
-		        alert("아이디를 입력해 주십시오.");
-
-		        return false;
-		    }
-			if( idVal == 0 ) {
-		        frm.userId.focus();
-		        alert("조건에 일치하는 아이디를 입력해주십시오.");
-
-		        return false;
-		    }
 			if( frm.userPw.value == "" ) {
 		        frm.userPw.focus();
-		        alert("비밀번호를 입력해 주십시오.");
+		        alert("새로운 비밀번호를 입력해 주십시오.");
 
 		        return false;
 		    }
+			
 			if( pwVal == 0 ) {
 		        frm.userPw.focus();
 		        alert("조건에 일치하는 비밀번호를 입력해주십시오.");
 
 		        return false;
 		    }
+			
+			if( frm.userPwChk.value == "" ) {
+		        frm.userPwChk.focus();
+		        alert("비밀번호를 확인란을 입력해 주십시오.");
+		        return false;
+		    }
+			
 			if( pwChk == 0 ) {
-		        frm.user_passwd_confirm.focus();
+		        frm.userPwChk.focus();
 		        alert("비밀번호가 일치하지 않습니다.");
 
 		        return false;
 		    }
-			if( frm.userName.value == "" ) {
-		        frm.userName.focus();
-		        alert("성명을 입력해 주십시오.");
-
-		        return false;
-		    }
-			if( frm.userEmail.value == "" ) {
-		        frm.userEmail.focus();
-		        alert("이메일 입력해 주십시오.");
-
-		        return false;
-		    }
 		}
-	
+		
 		function pwCheck(){
-		    if($('#userPw').val() == $('#passwd_confirm').val()){
+		    if($('#newPw').val() == $('#newPwChk').val()){
 		    	pwChk = 1;
 		        $('#pwConfirm').text('비밀번호 일치').css({'color':'green', 'display':'block'} );
 		    }else{
@@ -400,6 +328,7 @@
 		        $('#pwConfirm').text('비밀번호 불일치').css({'color':'red', 'display':'block'});
 		    }
 		}
+
 	</script>
 </body>
 </html>

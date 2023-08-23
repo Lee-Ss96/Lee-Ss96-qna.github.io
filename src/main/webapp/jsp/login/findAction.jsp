@@ -17,7 +17,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width", initial-scale="1">
-<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/bootstrap.css">
 <title>게시판 프로젝트</title>
 </head>
 <body>
@@ -31,7 +31,7 @@
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('이미 로그인 되어있습니다.')");
-			script.println("location.href = 'main.jsp'");
+			script.println("location.href = '../main.jsp'");
 			script.println("</script>");
 		}
 		

@@ -7,7 +7,13 @@ public class Notice {
 	private String userId;			//작성자
 	private String noticeDate;		//생성일
 	private String noticeCon;		//내용
-	private int noticeDel;			//글 삭제 여부
+	private int viewCount;			//조회수
+	private String noticeDel;			//글 삭제 여부
+	
+	private String searchDate;      //검색날짜
+	private String searchKey;		//검색종류
+	private String search;			//검색명
+	
 	
 	public int getNoticeId() {
 		return noticeId;
@@ -39,12 +45,37 @@ public class Notice {
 	public void setNoticeCon(String noticeCon) {
 		this.noticeCon = noticeCon;
 	}
-	public int getNoticeDel() {
+	public int getViewCount() {
+		return viewCount;
+	}
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+	public String getNoticeDel() {
 		return noticeDel;
 	}
-	public void setNoticeDel(int noticeDel) {
+	public void setNoticeDel(String noticeDel) {
 		this.noticeDel = noticeDel;
-	}		
+	}
+	public String getSearchDate() {
+		return searchDate;
+	}
+	public void setSearchDate(String searchDate) {
+		this.searchDate = searchDate;
+	}
+	public String getSearchKey() {
+		return searchKey;
+	}
+	public void setSearchKey(String searchKey) {
+		this.searchKey = searchKey;
+	}
+	public String getSearch() {
+		return search;
+	}
+	public void setSearch(String search) {
+		this.search = search;
+	}
+	
 
 	
 }

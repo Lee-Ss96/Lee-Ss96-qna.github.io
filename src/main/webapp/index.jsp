@@ -4,12 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="css/custom.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/bootstrap.css">
 <title>내돈내산 리뷰사이트</title>
 </head>
 <body>
  	<script>
- 		location.href = 'main.jsp';
+ 		location.href = 'jsp/main.jsp';
  	</script>
 </body>
 </html>

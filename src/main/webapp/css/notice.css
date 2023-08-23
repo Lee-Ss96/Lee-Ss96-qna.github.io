@@ -1,0 +1,354 @@
+.boardMain {
+    overflow: hidden;
+}
+
+.boardMain .leftArea {
+    float: left;
+    width: 50%;
+}
+
+.boardMain .leftArea .board {
+    margin: 0 23px 65px 0;
+}
+
+.boardMain .board {
+    position: relative;
+    margin: 0 0 65px;
+}
+
+.boardMain .board h3 {
+    margin: 0 0 13px;
+    height: 28px;
+    font-size: 16px;
+    color: #2e2e2e;
+    border-bottom: 2px solid #626672;
+}
+
+.boardMain .board .ec-base-table.typeList td {
+    color: #a4a4a4;
+}
+
+.boardMain .board .ec-base-table.typeList td.title a, .boardMain .board .ec-base-table.typeList td.title a:hover {
+    color: #4f4f4f;
+}
+
+.boardMain .board .ec-base-table.typeList td {
+    color: #a4a4a4;
+}
+
+.boardMain .rightArea {
+    float: right;
+    width: 50%;
+}
+
+.boardMain .board .btnLink {
+    position: absolute;
+    top: 3px;
+    right: 0;
+}
+
+a.btnLink {
+    color: #222;
+}
+
+.boardMain .board .galleryList {
+    overflow: hidden;
+}
+
+.boardMain .board .galleryList ul {
+    overflow: hidden;
+    margin: 0 -10px;
+}
+
+.boardMain .board .galleryList li {
+    float: left;
+    position: relative;
+    width: 20%;
+    padding: 0 0 12px 0;
+    word-break: break-all;
+}
+
+.boardMain .board .galleryList li .imgLink, .boardMain .board .galleryList li .imgLink:hover {
+    display: block;
+    margin: 0 10px 5px;
+    font-size: 12px;
+}
+
+.boardMain .board .galleryList li span {
+    display: block;
+    margin: 0 10px;
+    font-size: 11px;
+    color: #a4a4a4;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.boardMain .board .galleryList li .imgLink img {
+    width: 100%;
+    max-height: 110px;
+    border: 1px solid #ededed;
+}
+
+
+.xans-board-listpackage {
+    margin: 0 0 10px;
+}
+
+.titleArea {
+    min-height: 30px;
+    margin: 10px 0 20px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+
+xans-board-listpackage .ec-base-table {
+    clear: both;
+}
+
+.ec-base-table.typeList table {
+    border-top: 1px solid #d7d5d5;
+}
+
+.ec-base-table table {
+    position: relative;
+    margin: 10px 0 0;
+    border: 1px solid #d7d5d5;
+    border-top: 0;
+    color: #fff;
+    line-height: 1.5;
+}
+.ec-base-table th{
+	text-align: center;
+	
+}
+
+.ec-base-table th:first-child {
+    border-left: 0;
+}
+
+.ec-base-table .center {
+    text-align: center;
+}
+
+.ec-base-table.typeList.gBorder tbody td {
+    border-color: #eee;
+}
+
+.ec-base-table.typeList .center td, .ec-base-table.typeList td.center {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.ec-base-table .left {
+    text-align: left;
+}
+
+.ec-base-table.typeList .center td.left {
+    padding-left: 10px;
+}
+
+.ec-base-table.gBorder td {
+    border-left: 1px solid #dfdfdf;
+}
+
+.ec-base-paginate {
+    margin: 30px 0;
+    text-align: center;
+    font-size: 0;
+    line-height: 0;
+}
+
+.ec-base-paginate img {
+    vertical-align: top;
+}
+
+.ec-base-paginate ol {
+    display: inline-block;
+    font-size: 0;
+    line-height: 0;
+    vertical-align: top;
+}
+
+.ec-base-paginate li {
+    display: inline-block;
+    margin: 0 0 0 -1px;
+    border: 1px solid #d7d5d5;
+    font-size: 12px;
+    color: #757575;
+    vertical-align: top;
+}
+
+.ec-base-paginate li a.this {
+    padding-bottom: 6px;
+    border-bottom: 5px solid #495164;
+    color: #495164;
+}
+
+.ec-base-paginate li a {
+    display: block;
+    width: 33px;
+    padding: 9px 0;
+    font-weight: bold;
+    color: #939393;
+    line-height: 14px;
+    background: #fff;
+}
+
+th {
+    display: table-cell;
+    vertical-align: inherit;
+    font-weight: bold;
+    text-align: -internal-center;
+}
+
+tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+
+.txtNum {
+    display: inline-block;
+    font-size: 11px;
+    color: #939393;
+    word-break: normal;
+}
+
+
+.xans-board-search {
+    padding: 20px 0 20px 10px;
+    color: #2e2e2e;
+    font-size: 12px;
+}
+
+.xans-board-search .boardSearch {
+    display: block;
+}
+
+.xans-board-read .ec-base-table .etcArea li {
+    display: inline-block;
+    margin: 0 0 9px;
+    padding: 8px 20px 10px;
+    vertical-align: top;
+    line-height: 22px;
+    color: #666;
+}
+
+.ec-base-table.typeWrite td {
+    padding: 8px 10px 7px;
+}
+
+.ec-base-table td {
+    padding: 11px 10px 10px;
+    border-top: 1px solid #dfdfdf;
+    color: #353535;
+    vertical-align: middle;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.xans-board-read .ec-base-table .detail {
+    padding: 30px 20px;
+    border-top: 1px solid #eaeaea;
+    margin: -9px 0 0;
+    word-break: break-all;
+    line-height: normal;
+}
+
+.xans-board-read .ec-base-button {
+    margin: 10px 0 40px;
+}
+
+[class^='btn'][class*='Fix'].sizeS {
+    width: 96px;
+}
+
+[class^='btn'].sizeS {
+    padding: 6px 8px;
+}
+
+
+.fr-view {
+    word-wrap: break-word;
+}
+
+.ec-base-button .gLeft {
+    float: left;
+    text-align: left;
+}
+
+.xans-board-movement {
+    border: 1px solid #d7d5d5;
+    margin: 20px 0;
+}
+
+.xans-board-movement li.next {
+    border: 0;
+}
+
+.xans-board-movement li.next strong {
+    background: url(//img.echosting.cafe24.com/skin/base/board/ico_move_next.gif) no-repeat 0 15px;
+}
+
+.xans-board-movement li strong, .xans-board-movement li a {
+    float: left;
+    padding: 10px;
+}
+
+
+.xans-board-search p {
+    margin: 0 0 10px;
+    padding: 0 0 0 7px;
+    background: url(//img.echosting.cafe24.com/skin/base/common/ico_triangle3.gif) no-repeat 0 45%;
+    float:right;
+}
+
+.xans-board-search select#search_date {
+    margin: 0 2px 0 22px;
+}
+
+.xans-board-search select {
+    margin: 0 2px 0 0;
+    width: 72px;
+}
+
+option {
+    font-weight: normal;
+    display: block;
+    white-space-collapse: collapse;
+    text-wrap: nowrap;
+    min-height: 1.2em;
+    padding: 0px 2px 1px;
+}
+
+[class^='btnEm'], a[class^='btnEm'] {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 2px 8px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-family: "굴림",Gulim;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: normal;
+    text-decoration: none;
+    vertical-align: middle;
+    word-spacing: -0.5px;
+    letter-spacing: 0;
+    text-align: center;
+    white-space: nowrap;
+    color: #fff;
+    background-color: #84868b;
+}
+
+

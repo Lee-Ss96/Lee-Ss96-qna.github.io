@@ -244,6 +244,7 @@ li {
     display: inline-block;
     color: #2e2e2e;
     font-size: 16px;
+    font-weight: bold;
 }
 
 form {
@@ -628,12 +629,6 @@ a.btnLink:after {
 }
 
 
-
-
-
-
-
-
 #footer {
     position: relative;
     margin: 40px 0 0 0;
@@ -738,15 +733,6 @@ div.layerProgress {
     -moz-opacity: 0.4;
     background-color: #999;
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1212,8 +1198,6 @@ input[type=radio], input[type=checkbox] {
 .xans-member-findid .findId .ec-base-button {
     padding: 40px 0 10px;
 }
-
-
 
 
 

@@ -42,10 +42,28 @@ public class NoticeDAO {
 	}
 	
 
-	public int getNext() {
-		String SQL = "SELECT noticeId FROM NOTICE ORDER BY noticeId DESC";
+	public int getNext(String searchKey, String searchWord) {
+		String SQL = "";
+		if(searchWord == null || searchWord == "" || "null".equals(searchWord)) {
+			SQL = "SELECT noticeId FROM NOTICE ORDER BY noticeId DESC";
+		}else {
+			if("subject".equals(searchKey)) {
+				SQL = "SELECT noticeId FROM NOTICE WHERE noticeTitle LIKE ? ORDER BY noticeId DESC";
+			}else if("content".equals(searchKey)) {
+				SQL = "SELECT noticeId FROM NOTICE WHERE noticeCon LIKE ? ORDER BY noticeId DESC";
+			}else if("writerName".equals(searchKey)) {
+				SQL = "SELECT noticeId FROM NOTICE WHERE userId LIKE ? ORDER BY noticeId DESC";
+			}
+			
+		}
+				
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			if(searchWord == null || searchWord == "" || "null".equals(searchWord)) {
+			}else {
+				pstmt.setString(1, "%" + searchWord + "%");
+			}
+			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				return rs.getInt(1) + 1;
@@ -61,7 +79,7 @@ public class NoticeDAO {
 	}
 
 	
-	public int write(String noticeTitle, String userId, String noticeCon) {
+	/*public int write(String noticeTitle, String userId, String noticeCon) {
 		String SQL = "INSERT INTO NOTICE VALUES(?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
@@ -78,26 +96,47 @@ public class NoticeDAO {
 		}
 		
 		return -1;   //db 오류
-	}
+	}*/
 	
 	
 	//게시글 리스트
-	public ArrayList<Notice> getList(int pageNumber){
-		String SQL = "SELECT * FROM NOTICE WHERE noticeId < ? AND noticeDel = 1 ORDER BY noticeId DESC LIMIT 10";
+	public ArrayList<Notice> getList(int pageNumber, String searchKey, String searchWord){
+		String SQL = "";
+		
+		if(searchWord == null || searchWord == "" || "null".equals(searchWord)) {
+			SQL = "SELECT * FROM NOTICE WHERE noticeId < ? AND noticeDel = 'N' ORDER BY noticeId DESC LIMIT 10";
+		}else {
+			if("subject".equals(searchKey)) {
+				SQL = "SELECT * FROM NOTICE WHERE noticeDel = 'N' AND noticeTitle LIKE ? ORDER BY noticeId DESC LIMIT ?, 10";
+			}else if("content".equals(searchKey)) {
+				SQL = "SELECT * FROM NOTICE WHERE noticeDel = 'N' AND noticeCon LIKE ? ORDER BY noticeId DESC LIMIT ?, 10";
+			}else if("writerName".equals(searchKey)) {
+				SQL = "SELECT * FROM NOTICE WHERE noticeDel = 'N' AND userId LIKE ? ORDER BY noticeId DESC LIMIT ?, 10";
+			}
+				
+		}
 		ArrayList<Notice> list = new ArrayList<Notice>();
 		
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1, getNext() - (pageNumber - 1) * 10);
+			
+			if(searchWord == null || searchWord == "" || "null".equals(searchWord)) {
+				pstmt.setInt(1, getCount(searchKey, searchWord) - (pageNumber - 1) * 10);
+			}else {
+				pstmt.setString(1, "%" + searchWord + "%");
+				pstmt.setInt(2, (pageNumber - 1) * 10);
+			}
+			
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Notice notice = new Notice();
 				notice.setNoticeId(rs.getInt(1));
 				notice.setNoticeTitle(rs.getString(2));
-				notice.setUserId(rs.getString(3));
-				notice.setNoticeDate(rs.getString(4));
-				notice.setNoticeCon(rs.getString(5));
-				notice.setNoticeDel(rs.getInt(6));
+				notice.setNoticeCon(rs.getString(3));
+				notice.setUserId(rs.getString(4));
+				notice.setNoticeDate(rs.getString(5));
+				notice.setViewCount(rs.getInt(6));
+				notice.setNoticeDel(rs.getString(7));
 				list.add(notice);
 			}
 
@@ -108,12 +147,30 @@ public class NoticeDAO {
 		return list;
 	}
 	
-	public boolean nextPage(int pageNumber) {
-		String SQL = "SELECT * FROM NOTICE WHERE noticeId < ? AND noticeDel = 1";
+	public boolean nextPage(int pageNumber, String searchKey, String searchWord) {
+		String SQL = "";
+		if(searchWord == null || searchWord == "" || "null".equals(searchWord)) {
+			SQL = "SELECT * FROM NOTICE WHERE noticeId < ? AND noticeDel = 'N'";
+		}else {
+			if("subject".equals(searchKey)) {
+				SQL = "SELECT * FROM NOTICE WHERE noticeId < ? AND noticeDel = 'N' AND noticeTitle LIKE ?";
+			}else if("content".equals(searchKey)) {
+				SQL = "SELECT * FROM NOTICE WHERE noticeId < ? AND noticeDel = 'N' AND noticeCon  LIKE ?";
+			}else if("writerName".equals(searchKey)) {
+				SQL = "SELECT * FROM NOTICE WHERE noticeId < ? AND noticeDel = 'N' AND userId LIKE ?";
+			}
+		}
+		
 		
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1, getNext() - (pageNumber - 1) * 10);
+			pstmt.setInt(1, getCount(searchKey,searchWord) - (pageNumber - 1) * 10);
+			
+			if(searchWord == null || searchWord == "" || "null".equals(searchWord)) {
+				
+			}else {
+				pstmt.setString(2, "%" + searchWord + "%");
+			}
 			rs = pstmt.executeQuery();
 
 			if(rs.next()) {
@@ -124,6 +181,42 @@ public class NoticeDAO {
 		}
 		
 		return false;
+	}
+	
+	public int getCount(String searchKey, String searchWord) {
+		String SQL = "";
+		if(searchWord == null || searchWord == "" || "null".equals(searchWord)) {
+			SQL = "SELECT count(*) FROM NOTICE ORDER BY noticeId DESC";
+		}else {
+			if("subject".equals(searchKey)) {
+				SQL = "SELECT count(*) FROM NOTICE WHERE noticeTitle LIKE ? ORDER BY noticeId DESC";
+			}else if("content".equals(searchKey)) {
+				SQL = "SELECT count(*) FROM NOTICE WHERE noticeCon LIKE ? ORDER BY noticeId DESC";
+			}else if("writerName".equals(searchKey)) {
+				SQL = "SELECT count(*) FROM NOTICE WHERE userId LIKE ? ORDER BY noticeId DESC";
+			}
+			
+		}
+				
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			if(searchWord == null || searchWord == "" || "null".equals(searchWord)) {
+			}else {
+				pstmt.setString(1, "%" + searchWord + "%");
+			}
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1) + 1;
+			}
+			
+			return 1; //첫번째 게시글
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return -1;   //db 오류
 	}
 	
 	//글 상세
@@ -138,10 +231,11 @@ public class NoticeDAO {
 				Notice notice = new Notice();
 				notice.setNoticeId(rs.getInt(1));
 				notice.setNoticeTitle(rs.getString(2));
-				notice.setUserId(rs.getString(3));
-				notice.setNoticeDate(rs.getString(4));
-				notice.setNoticeCon(rs.getString(5));
-				notice.setNoticeDel(rs.getInt(6));
+				notice.setNoticeCon(rs.getString(3));
+				notice.setUserId(rs.getString(4));
+				notice.setNoticeDate(rs.getString(5));
+				notice.setViewCount(rs.getInt(6));
+				notice.setNoticeDel(rs.getString(7));
 				return notice;
 			}
 
@@ -183,4 +277,69 @@ public class NoticeDAO {
 		
 		return -1;   //db 오류
 	}
+	
+	//공지사항 이전글
+	public Notice getPrevNotice(int noticeId) {
+		String SQL = "SELECT * FROM NOTICE WHERE noticeId = (SELECT MAX(noticeId) FROM NOTICE WHERE noticeID < ? AND noticeDel = 'N') ";
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, noticeId);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				Notice notice = new Notice();
+				notice.setNoticeId(rs.getInt(1));
+				notice.setNoticeTitle(rs.getString(2));
+				notice.setNoticeCon(rs.getString(3));
+				notice.setUserId(rs.getString(4));
+				notice.setNoticeDate(rs.getString(5));
+				notice.setViewCount(rs.getInt(6));
+				notice.setNoticeDel(rs.getString(7));
+				return notice;
+			}else {
+				Notice notice = new Notice();
+				return notice;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	
+	//공지사항 다음글
+	public Notice getNextNotice(int noticeId) {
+		System.out.println(noticeId);
+		String SQL = "SELECT * FROM NOTICE WHERE noticeId = (SELECT MIN(noticeId) FROM NOTICE WHERE noticeID > ? AND noticeDel = 'N') ";
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, noticeId);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				Notice notice = new Notice();
+				notice.setNoticeId(rs.getInt(1));
+				notice.setNoticeTitle(rs.getString(2));
+				notice.setNoticeCon(rs.getString(3));
+				notice.setUserId(rs.getString(4));
+				notice.setNoticeDate(rs.getString(5));
+				notice.setViewCount(rs.getInt(6));
+				notice.setNoticeDel(rs.getString(7));
+				System.out.println("11111");
+				return notice;
+			}else {
+				Notice notice = new Notice();
+				return notice;
+			}
+
+		} catch (Exception e) {
+			System.out.println("33333");
+			e.printStackTrace();
+		}
+		System.out.println("44444");
+		return null;
+	}
+	
 }

@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width", initial-scale="1">
-<link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/custom.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/bootstrap.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/bootstrap.css">
 <title>게시판 프로젝트</title>
 </head>
 <body>
@@ -88,6 +88,6 @@
 		</div>
 	</div>	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="js/bootstrap.js"></script>
+	<script src="<%= request.getContextPath()%>/js/bootstrap.js"></script>
 </body>
 </html>
